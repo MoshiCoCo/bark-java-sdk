@@ -21,7 +21,7 @@ pusher.simplePush("hello word");
 
 ```
 
-```shelll
+```shell
 BarkPush pusher=new BarkPush("https://xxx.xxx.xx","xxxxx");
 assertNotNull(pusher);
 pusher.simplePush("hello word");

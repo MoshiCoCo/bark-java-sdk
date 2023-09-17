@@ -1,15 +1,16 @@
 package top.misec.bark;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.*;
 import com.alibaba.fastjson2.JSON;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import top.misec.bark.exception.BarkException;
 import top.misec.bark.pojo.BarkCfg;
-import top.misec.bark.pojo.PushRequest;
 import top.misec.bark.pojo.BarkPushResp;
 import top.misec.bark.pojo.PushDetails;
+import top.misec.bark.pojo.PushRequest;
 
 
 @Builder
@@ -20,13 +21,16 @@ public class BarkPush {
     private String pushUrl;
 
     BarkPush(String pushUrl, String deviceKey) {
-        if (pushUrl == null || deviceKey == null) {
-            throw new BarkException("pushUrl or deviceKey is null");
+        if (StrUtil.isEmpty(pushUrl)) {
+            throw new BarkException("pushUrl is empty");
         }
-        // pushUrl 必须以 https:// 或 http:// 开头
-        if (!pushUrl.startsWith("https://") && !pushUrl.startsWith("http://")) {
-            throw new BarkException("pushUrl must start with https:// or http://");
+        if (StrUtil.isEmpty(deviceKey)) {
+            throw new BarkException("deviceKey is empty");
         }
+        if (!pushUrl.matches("^(https?)://[\\\\w.-]+\\\\.\\\\w{2,4}(/.*)?$")) {
+            throw new BarkException("pushUrl is invalid");
+        }
+
         this.pushUrl = pushUrl;
         this.deviceKey = deviceKey;
     }

@@ -1,6 +1,7 @@
 package top.misec.bark.pojo;
 
 
+import cn.hutool.core.util.StrUtil;
 import lombok.Builder;
 import lombok.Data;
 import top.misec.bark.exception.BarkException;
@@ -12,11 +13,14 @@ public class BarkCfg {
     private String deviceKey;
 
     public void valid() {
-        if (pushUrl == null || deviceKey == null) {
-            throw new BarkException("pushUrl or deviceKey is null");
+        if (StrUtil.isEmpty(pushUrl)) {
+            throw new BarkException("pushUrl is empty");
         }
-        if (!pushUrl.startsWith("https://") && !pushUrl.startsWith("http://")) {
-            throw new BarkException("pushUrl must start with https:// or http://");
+        if (StrUtil.isEmpty(deviceKey)) {
+            throw new BarkException("deviceKey is empty");
+        }
+        if (!pushUrl.matches("^(https?)://[\\\\w.-]+\\\\.\\\\w{2,4}(/.*)?$")) {
+            throw new BarkException("pushUrl is invalid");
         }
     }
 }

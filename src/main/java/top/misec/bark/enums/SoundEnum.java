@@ -1,11 +1,15 @@
 package top.misec.bark.enums;
 
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@Getter
 @RequiredArgsConstructor
 public enum SoundEnum {
-
+    /**
+     * gotosleep.caf
+     */
     GOTOSLEEP("gotosleep.caf"),
     PAYMENTSUCCESS("paymentsuccess.caf"),
     SHAKE("shake.caf"),
