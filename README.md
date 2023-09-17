@@ -10,3 +10,19 @@
     <version>0.0.1</version>
 </dependency>
 ```
+
+## 快速开始
+
+```shell
+
+BarkPush pusher=new BarkPush("https://xxx.xxx.xx","xxxxx");
+assertNotNull(pusher);
+pusher.simplePush("hello word");
+
+```
+
+```shelll
+BarkPush pusher=new BarkPush("https://xxx.xxx.xx","xxxxx");
+assertNotNull(pusher);
+pusher.simplePush("hello word");
+```

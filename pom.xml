@@ -16,11 +16,10 @@
     <licenses>
         <license>
             <name>MIT License</name>
-            <url>https://opensource.org/license/mit/</url>
+            <url>https://github.com/MoshiCoCo/bark-java-sdk/blob/main/LICENSE</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
-
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -81,7 +80,7 @@
 
         <dependency>
             <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
+            <artifactId>hutool-http</artifactId>
             <version>5.8.18</version>
         </dependency>
 
