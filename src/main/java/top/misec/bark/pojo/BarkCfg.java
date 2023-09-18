@@ -11,6 +11,7 @@ import top.misec.bark.exception.BarkException;
 public class BarkCfg {
     private String pushUrl;
     private String deviceKey;
+    private Encryption encryption;
 
     public void valid() {
         if (StrUtil.isEmpty(pushUrl)) {
