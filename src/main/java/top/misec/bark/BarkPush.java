@@ -24,7 +24,7 @@ public class BarkPush {
     private String pushUrl;
     private Encryption encryption;
 
-    BarkPush(String pushUrl, String deviceKey) {
+    public BarkPush(String pushUrl, String deviceKey) {
         if (StrUtil.isEmpty(pushUrl)) {
             throw new BarkException("pushUrl is empty");
         }
@@ -44,7 +44,7 @@ public class BarkPush {
      * @param deviceKey  设备Key
      * @param encryption 加密信息
      */
-    BarkPush(String pushUrl, String deviceKey, Encryption encryption) {
+    public BarkPush(String pushUrl, String deviceKey, Encryption encryption) {
         if (StrUtil.isEmpty(pushUrl)) {
             throw new BarkException("pushUrl is empty");
         }
@@ -60,14 +60,12 @@ public class BarkPush {
         }
 
         encryption.valid();
-
-
         this.pushUrl = pushUrl;
         this.deviceKey = deviceKey;
         this.encryption = encryption;
     }
 
-    BarkPush(BarkCfg cfg) {
+    public BarkPush(BarkCfg cfg) {
         if (cfg == null) {
             throw new BarkException("cfg is null");
         }
