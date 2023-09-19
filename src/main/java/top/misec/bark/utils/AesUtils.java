@@ -5,7 +5,6 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.security.AlgorithmParameters;
 import java.security.Key;
 import java.security.Security;
 
@@ -60,12 +59,4 @@ public class AesUtils {
             throw new RuntimeException(e);
         }
     }
-
-
-    public static AlgorithmParameters generateIV(byte[] iv) throws Exception {
-        AlgorithmParameters params = AlgorithmParameters.getInstance(KEY_ALGORITHM);
-        params.init(new IvParameterSpec(iv));
-        return params;
-    }
-
 }

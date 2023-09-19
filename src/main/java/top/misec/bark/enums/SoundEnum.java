@@ -11,6 +11,9 @@ public enum SoundEnum {
      * gotosleep.caf
      */
     GOTOSLEEP("gotosleep.caf"),
+    /**
+     * alarm.caf
+     */
     PAYMENTSUCCESS("paymentsuccess.caf"),
     SHAKE("shake.caf"),
     ALARM("alarm.caf"),
