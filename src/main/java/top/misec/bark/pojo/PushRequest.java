@@ -3,7 +3,6 @@ package top.misec.bark.pojo;
 import com.alibaba.fastjson2.annotation.JSONField;
 import lombok.Builder;
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 /**
  * @author moshi
