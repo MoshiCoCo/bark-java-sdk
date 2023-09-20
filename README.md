@@ -16,7 +16,6 @@
 ### SimplePush
 
 ```shell
-
 BarkPush pusher=new BarkPush("https://xxx.xxx.xx/push","xxxxx");
 assertNotNull(pusher);
 pusher.simplePush("hello word");
@@ -25,21 +24,21 @@ pusher.simplePush("hello word");
 ### EncryptedPush
 
 ```shell
-        Encryption encryption = Encryption.builder()
-                .mode("ECB")
-                .key("12345678901234561234567890123456")
-                .build();
-        BarkPush pusher = new BarkPush("", "", encryption);
-        pusher.encryptionPush("123");
+Encryption encryption = Encryption.builder()
+        .mode("ECB")
+        .key("12345678901234561234567890123456")
+        .build();
+BarkPush pusher = new BarkPush("", "", encryption);
+pusher.encryptionPush("123");
 ```
 
 ```shell
-        Encryption encryption = Encryption.builder()
-                .mode("CBC")
-                .key("12345678901234561234567890123456")
-                .iv("1111111111111111")
-                .build();
+Encryption encryption = Encryption.builder()
+        .mode("CBC")
+        .key("12345678901234561234567890123456")
+        .iv("1111111111111111")
+        .build();
 
-        BarkPush pusher = new BarkPush("", "", encryption);
-        pusher.encryptionPush("123");
+BarkPush pusher = new BarkPush("", "", encryption);
+pusher.encryptionPush("123");
 ```

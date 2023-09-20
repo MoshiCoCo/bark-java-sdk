@@ -16,7 +16,6 @@ public class AesUtils {
         Security.addProvider(new BouncyCastleProvider());
     }
 
-
     public static byte[] encrypt(byte[] originalContent, byte[] encryptKey, int model, byte[] ivByte) {
 
         try {

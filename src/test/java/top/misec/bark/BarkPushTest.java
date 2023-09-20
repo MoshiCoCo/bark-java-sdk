@@ -6,7 +6,7 @@ import top.misec.bark.pojo.BarkPushResp;
 import top.misec.bark.pojo.Encryption;
 import top.misec.bark.pojo.PushDetails;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class BarkPushTest {
 

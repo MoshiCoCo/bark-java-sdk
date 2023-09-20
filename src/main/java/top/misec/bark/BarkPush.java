@@ -44,7 +44,7 @@ public class BarkPush {
      * @param deviceKey  设备Key
      * @param encryption 加密信息
      */
-    public BarkPush(String pushUrl, String deviceKey, Encryption encryption) {
+    public BarkPush(String deviceKey, String pushUrl, Encryption encryption) {
         if (StrUtil.isEmpty(pushUrl)) {
             throw new BarkException("pushUrl is empty");
         }
