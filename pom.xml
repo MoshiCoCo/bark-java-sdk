@@ -52,15 +52,21 @@
         <profile>
             <id>ossrh</id>
             <activation>
-                <activeByDefault>false</activeByDefault>
+                <property>
+                    <name>useOssrh</name>
+                    <value>true</value>
+                </property>
             </activation>
             <distributionManagement>
                 <snapshotRepository>
                     <id>ossrh</id>
+                    <name>Snapshots Repository OSSRH</name>
                     <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+                    <uniqueVersion>true</uniqueVersion>
                 </snapshotRepository>
                 <repository>
                     <id>ossrh</id>
+                    <name>Central Repository OSSRH</name>
                     <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
                 </repository>
             </distributionManagement>
@@ -96,6 +102,12 @@
         </profile>
         <profile>
             <id>github</id>
+            <activation>
+                <property>
+                    <name>useGithub</name>
+                    <value>true</value>
+                </property>
+            </activation>
             <repositories>
                 <repository>
                     <id>central</id>
@@ -178,6 +190,12 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.2</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
