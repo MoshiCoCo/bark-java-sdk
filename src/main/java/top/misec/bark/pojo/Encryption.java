@@ -18,10 +18,10 @@ public class Encryption {
     public void valid() {
 
         if (StrUtil.isEmpty(this.padding)) {
-            this.padding = "PKC7Padding";
+            this.padding = "PKCS7Padding";
         }
         if (StrUtil.isEmpty(this.algorithm)) {
-            this.mode = "AES";
+            this.algorithm = "AES";
         }
 
         if (StrUtil.isEmpty(this.mode)) {
@@ -39,9 +39,10 @@ public class Encryption {
         }
 
         if (StrUtil.isEmpty(this.key)) {
-            if (this.key.length() % 16 != 0) {
-                throw new BarkException("AES Key length is invalid, only support AES128, AES192, AES256");
-            }
+            throw new BarkException("AES Key is empty");
+        }
+        if (this.key.length() % 16 != 0) {
+            throw new BarkException("AES Key length is invalid, only support AES128, AES192, AES256");
         }
     }
 }
