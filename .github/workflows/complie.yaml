@@ -18,6 +18,6 @@ jobs:
           java-version: 17
           cache: maven
       - name: compile with Maven
-        run: mvn -B test-compile --file pom.xml
+        run: mvn -B test --file pom.xml
       - name: Maven Dependency Tree Dependency Submission
         uses: advanced-security/maven-dependency-submission-action@v3.0.2

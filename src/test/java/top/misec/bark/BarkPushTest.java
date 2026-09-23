@@ -2,66 +2,105 @@ package top.misec.bark;
 
 import org.junit.jupiter.api.Test;
 import top.misec.bark.enums.SoundEnum;
-import top.misec.bark.pojo.BarkPushResp;
+import top.misec.bark.exception.BarkException;
 import top.misec.bark.pojo.Encryption;
 import top.misec.bark.pojo.PushDetails;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
 class BarkPushTest {
 
-    @Test
-    void detailPushWithResp() {
-        BarkPush builder = new BarkPush("", "");
-        assertNotNull(builder);
-        PushDetails pushDetails = PushDetails.builder().title("test").sound(SoundEnum.BLOOM.name()).body("test").build();
-        builder.simpleWithResp(pushDetails);
-    }
-
+    private static final String VALID_URL = "https://api.day.app/push";
+    private static final String VALID_KEY = "12345678901234561234567890123456";
 
     @Test
-    void simpleWithResp() {
-        BarkPush pusher = new BarkPush("", "");
-        assertNotNull(pusher);
-        BarkPushResp resp = pusher.simpleWithResp("hello word");
-        System.out.println(resp.toString());
+    void constructorRejectsEmptyPushUrl() {
+        assertThrowsExactly(BarkException.class, () -> new BarkPush("", "deviceKey"));
     }
 
     @Test
-    void simpleWithRespBuild() {
-        BarkPush pusher = new BarkPush("https://api.day.app/push", "xyz");
-        assertNotNull(pusher);
-        BarkPushResp resp = pusher.simpleWithResp("hello word");
-        assertEquals(400, resp.getCode());
-        assertEquals("failed to get device token: failed to get [xyz] device token from database", resp.getMessage());
+    void constructorRejectsEmptyDeviceKey() {
+        assertThrowsExactly(BarkException.class, () -> new BarkPush(VALID_URL, ""));
     }
 
     @Test
-    void encryptionPush() {
+    void constructorRejectsInvalidPushUrl() {
+        assertThrowsExactly(BarkException.class, () -> new BarkPush("ftp://api.day.app/push", "deviceKey"));
+    }
 
+    @Test
+    void constructorAcceptsValidArgs() {
+        assertNotNull(new BarkPush(VALID_URL, "deviceKey"));
+    }
+
+    @Test
+    void pushDetailsBuilder() {
+        PushDetails pushDetails = PushDetails.builder()
+                .title("test")
+                .sound(SoundEnum.BLOOM.getSoundName())
+                .body("test")
+                .build();
+        assertEquals("bloom.caf", pushDetails.getSound());
+    }
+
+    @Test
+    void encryptionConstructorRejectsEmptyPushUrl() {
+        Encryption encryption = validEncryption();
+        assertThrowsExactly(BarkException.class, () -> new BarkPush("deviceKey", "", encryption));
+    }
+
+    @Test
+    void encryptionConstructorRejectsNullEncryption() {
+        assertThrowsExactly(BarkException.class, () -> new BarkPush("deviceKey", VALID_URL, null));
+    }
+
+    @Test
+    void encryptionConstructorAcceptsValidArgs() {
+        assertNotNull(new BarkPush("deviceKey", VALID_URL, validEncryption()));
+    }
+
+    @Test
+    void encryptionValidDefaults() {
         Encryption encryption = Encryption.builder()
-                .key("12345678901234561234567890123456")
+                .key(VALID_KEY)
+                .mode("ECB")
+                .build();
+        encryption.valid();
+        assertEquals("AES", encryption.getAlgorithm());
+        assertEquals("PKCS7Padding", encryption.getPadding());
+    }
+
+    @Test
+    void encryptionValidRejectsEmptyKey() {
+        assertThrowsExactly(BarkException.class,
+                () -> Encryption.builder().mode("ECB").build().valid());
+    }
+
+    @Test
+    void encryptionValidRejectsInvalidKeyLength() {
+        assertThrowsExactly(BarkException.class,
+                () -> Encryption.builder().key("short").mode("ECB").build().valid());
+    }
+
+    @Test
+    void encryptionValidRejectsInvalidMode() {
+        assertThrowsExactly(BarkException.class,
+                () -> Encryption.builder().key(VALID_KEY).mode("AES").build().valid());
+    }
+
+    @Test
+    void encryptionValidRejectsInvalidIvLength() {
+        assertThrowsExactly(BarkException.class,
+                () -> Encryption.builder().key(VALID_KEY).iv("short").mode("CBC").build().valid());
+    }
+
+    private static Encryption validEncryption() {
+        return Encryption.builder()
+                .key(VALID_KEY)
                 .iv("1111111111111111")
                 .mode("CBC")
                 .build();
-
-        BarkPush pusher = new BarkPush("", "", encryption);
-        BarkPushResp resp = pusher.encryptionPush("123");
-
     }
-
-    @Test
-    void encryptionPushECB() {
-
-        Encryption encryption = Encryption.builder()
-                .key("12345678901234561234567890123456")
-                .iv("1111111111111111")
-                .mode("ECB")
-                .build();
-        BarkPush pusher = new BarkPush("", "", encryption);
-        BarkPushResp resp = pusher.encryptionPush("123");
-    }
-
-
 }
