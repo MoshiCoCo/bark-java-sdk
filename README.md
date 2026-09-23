@@ -26,30 +26,64 @@
 
 ### SimplePush
 
-```shell
-BarkPush pusher=new BarkPush("https://xxx.xxx.xx/push","xxxxx");
-assertNotNull(pusher);
-pusher.simplePush("hello word");
+```java
+BarkPush pusher = new BarkPush("https://xxx.xxx.xx/push", "xxxxx");
+pusher.simpleWithResp("hello world");
+```
+
+### DetailPush
+
+```java
+PushDetails details = PushDetails.builder()
+        .title("title")
+        .subtitle("subtitle")
+        .body("body")
+        .sound(SoundEnum.BLOOM.getSoundName())
+        .level("active")          // critical / active / timeSensitive / passive
+        .badge(1)
+        .ttl(3600)
+        .url("https://mritd.com")
+        .build();
+pusher.simpleWithResp(details);
+```
+
+### BatchPush（多设备）
+
+```java
+BarkPushResp resp = pusher.batchWithResp(List.of("key1", "key2"), details);
+resp.getData();  // 逐设备推送结果
+```
+
+### Basic Auth 与超时
+
+服务端启用 `ARK_USER`/`ARK_PASSWORD` 时，使用 Builder 或 `BarkCfg`：
+
+```java
+BarkPush pusher = BarkPush.builder()
+        .pushUrl("https://xxx.xxx.xx/push")
+        .deviceKey("xxxxx")
+        .username("user")
+        .password("pass")
+        .timeout(5000)   // 毫秒，不设置则不超时
+        .build();
 ```
 
 ### EncryptedPush
 
-```shell
-Encryption encryption = Encryption.builder()
-        .mode("ECB")
-        .key("12345678901234561234567890123456")
-        .build();
-BarkPush pusher = new BarkPush("", "", encryption);
-pusher.encryptionPush("123");
-```
+支持 `ECB` / `CBC` / `GCM` 三种模式（与服务端及 Bark App 一致，密钥为 UTF-8 字符串原始字节，iv 以明文原样传输而非 base64）：
 
-```shell
-Encryption encryption = Encryption.builder()
-        .mode("CBC")
-        .key("12345678901234561234567890123456")
-        .iv("1111111111111111")
-        .build();
+```java
+// ECB：16/24/32 字符 key，无需 iv
+Encryption ecb = Encryption.builder().mode("ECB").key("12345678901234561234567890123456").build();
 
-BarkPush pusher = new BarkPush("", "", encryption);
-pusher.encryptionPush("123");
+// CBC：必须提供 16 字符 iv
+Encryption cbc = Encryption.builder().mode("CBC")
+        .key("12345678901234561234567890123456").iv("1111111111111111").build();
+
+// GCM：可不提供 iv（每次推送自动生成 12 字符随机 iv），提供则须为 12 字符
+Encryption gcm = Encryption.builder().mode("GCM")
+        .key("12345678901234561234567890123456").build();
+
+BarkPush pusher = new BarkPush("https://xxx.xxx.xx/push", "xxxxx", cbc);
+pusher.encryptionPush("hello world");
 ```
